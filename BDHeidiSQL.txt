@@ -1,0 +1,91 @@
+CREATE TABLE Equipos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    escudo VARCHAR(255), -- Puede ser una URL o descripción
+    ciudad VARCHAR(100),
+    fecha_fundacion DATE
+);
+
+CREATE TABLE Torneos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    fecha_inicio DATE,
+    fecha_fin DATE,
+    cantidad_equipos INT CHECK (cantidad_equipos IN (8, 10, 12, 14, 16)) -- Opciones limitadas
+);
+
+CREATE TABLE Canchas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    ubicacion VARCHAR(255),
+    tamaño VARCHAR(20), -- Ejemplo: Fútbol 5, 6, 7
+    techada BOOLEAN, -- Sí/No (1 o 0)
+    tipo_superficie VARCHAR(50), -- Ej: pasto sintético, piso
+    disponible BOOLEAN -- Indicador de disponibilidad
+);
+
+CREATE TABLE Partidos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    torneo_id INT,
+    fecha DATETIME NOT NULL,
+    equipo_local_id INT,
+    equipo_visitante_id INT,
+    cancha_id INT,
+    FOREIGN KEY (torneo_id) REFERENCES Torneos(id),
+    FOREIGN KEY (equipo_local_id) REFERENCES Equipos(id),
+    FOREIGN KEY (equipo_visitante_id) REFERENCES Equipos(id),
+    FOREIGN KEY (cancha_id) REFERENCES Canchas(id)
+);
+
+CREATE TABLE Resultados (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    partido_id INT,
+    equipo_local_goles INT,
+    equipo_visitante_goles INT,
+    FOREIGN KEY (partido_id) REFERENCES Partidos(id)
+);
+
+CREATE TABLE Puntos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    equipo_id INT,
+    partidos_jugados INT DEFAULT 0,
+    partidos_ganados INT DEFAULT 0,
+    partidos_empatados INT DEFAULT 0,
+    partidos_perdidos INT DEFAULT 0,
+    puntos_totales INT AS (partidos_ganados * 3 + partidos_empatados) VIRTUAL, -- Fórmula para puntos
+    FOREIGN KEY (equipo_id) REFERENCES Equipos(id)
+);
+
+CREATE TABLE Jugadores (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    apellido VARCHAR(100) NOT NULL,
+    fecha_nacimiento DATE,
+    equipo_id INT,
+    posicion VARCHAR(50),
+    FOREIGN KEY (equipo_id) REFERENCES Equipos(id)
+);
+
+CREATE TABLE Roles_Equipo (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    equipo_id INT,
+    jugador_id INT,
+    rol VARCHAR(50),
+    FOREIGN KEY (equipo_id) REFERENCES Equipos(id),
+    FOREIGN KEY (jugador_id) REFERENCES Jugadores(id)
+);
+
+CREATE TABLE Arbitros (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100),
+    apellido VARCHAR(100),
+    nacionalidad VARCHAR(50)
+);
+
+CREATE TABLE Participaciones_Arbitros (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    partido_id INT,
+    arbitro_id INT,
+    FOREIGN KEY (partido_id) REFERENCES Partidos(id),
+    FOREIGN KEY (arbitro_id) REFERENCES Arbitros(id)
+);
