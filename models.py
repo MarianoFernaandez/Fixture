@@ -178,6 +178,34 @@ class Fixture(Base):
     # Relación 1 a muchos con Fechas
     fechas = relationship("Fecha", back_populates="fixture")
 
+# Métodos CRUD
+    @classmethod
+    def create(cls, session: Session, **kwargs):
+        new_fixture = cls(**kwargs)
+        session.add(new_fixture)
+        session.commit()
+        session.refresh(new_fixture)
+        return new_fixture
+
+    @classmethod
+    def read(cls, session: Session, fixture_id: int):
+        return session.query(cls).filter(cls.id == fixture_id).first()
+
+    @classmethod
+    def read_all(cls, session: Session, skip: int = 0, limit: int = 10):
+        return session.query(cls).offset(skip).limit(limit).all()
+
+    def update(self, session: Session, **kwargs):
+        for attr, value in kwargs.items():
+            setattr(self, attr, value)
+        session.commit()
+        session.refresh(self)
+        return self
+
+    def delete(self, session: Session):
+        session.delete(self)
+        session.commit() 
+
 #---Fechas---
 
 class Fecha(Base):
@@ -191,6 +219,34 @@ class Fecha(Base):
     
     # Relación 1 a muchos con Partidos
     partidos = relationship("Partido", back_populates="fecha")
+
+# Métodos CRUD
+    @classmethod
+    def create(cls, session: Session, **kwargs):
+        new_fechas = cls(**kwargs)
+        session.add(new_fechas)
+        session.commit()
+        session.refresh(new_fechas)
+        return new_fechas
+
+    @classmethod
+    def read(cls, session: Session, fechas_id: int):
+        return session.query(cls).filter(cls.id == fechas_id).first()
+
+    @classmethod
+    def read_all(cls, session: Session, skip: int = 0, limit: int = 10):
+        return session.query(cls).offset(skip).limit(limit).all()
+
+    def update(self, session: Session, **kwargs):
+        for attr, value in kwargs.items():
+            setattr(self, attr, value)
+        session.commit()
+        session.refresh(self)
+        return self
+
+    def delete(self, session: Session):
+        session.delete(self)
+        session.commit() 
 
 #---Partidos---
 
@@ -213,6 +269,34 @@ class Partido(Base):
     # Relación con Árbitro
     arbitro = relationship("Arbitro", back_populates="partido", uselist=False)
 
+# Métodos CRUD
+    @classmethod
+    def create(cls, session: Session, **kwargs):
+        new_partidos = cls(**kwargs)
+        session.add(new_partidos)
+        session.commit()
+        session.refresh(new_partidos)
+        return new_partidos
+
+    @classmethod
+    def read(cls, session: Session, partidos_id: int):
+        return session.query(cls).filter(cls.id == partidos_id).first()
+
+    @classmethod
+    def read_all(cls, session: Session, skip: int = 0, limit: int = 10):
+        return session.query(cls).offset(skip).limit(limit).all()
+
+    def update(self, session: Session, **kwargs):
+        for attr, value in kwargs.items():
+            setattr(self, attr, value)
+        session.commit()
+        session.refresh(self)
+        return self
+
+    def delete(self, session: Session):
+        session.delete(self)
+        session.commit() 
+
 #---Arbitros---
 
 class Arbitro(Base):
@@ -224,6 +308,34 @@ class Arbitro(Base):
     # Relación con Partidos
     partido = relationship("Partido", back_populates="arbitro", uselist=False)
 
+# Métodos CRUD
+    @classmethod
+    def create(cls, session: Session, **kwargs):
+        new_arbitros = cls(**kwargs)
+        session.add(new_arbitros)
+        session.commit()
+        session.refresh(new_arbitros)
+        return new_arbitros
+
+    @classmethod
+    def read(cls, session: Session, arbitros_id: int):
+        return session.query(cls).filter(cls.id == arbitros_id).first()
+
+    @classmethod
+    def read_all(cls, session: Session, skip: int = 0, limit: int = 10):
+        return session.query(cls).offset(skip).limit(limit).all()
+
+    def update(self, session: Session, **kwargs):
+        for attr, value in kwargs.items():
+            setattr(self, attr, value)
+        session.commit()
+        session.refresh(self)
+        return self
+
+    def delete(self, session: Session):
+        session.delete(self)
+        session.commit() 
+
 #---Canchas---
 
 class Cancha(Base):
@@ -233,3 +345,31 @@ class Cancha(Base):
     ubicacion = Column(String(255))
     tamaño = Column(Enum('F5', 'F6', 'F7', 'F8', name='tamano_enum'))
     tipoSuperficie = Column(Enum('piso', 'pasto', name='tipo_superficie_enum'))
+
+    # Métodos CRUD
+    @classmethod
+    def create(cls, session: Session, **kwargs):
+        new_canchas = cls(**kwargs)
+        session.add(new_canchas)
+        session.commit()
+        session.refresh(new_canchas)
+        return new_canchas
+
+    @classmethod
+    def read(cls, session: Session, canchas_id: int):
+        return session.query(cls).filter(cls.id == canchas_id).first()
+
+    @classmethod
+    def read_all(cls, session: Session, skip: int = 0, limit: int = 10):
+        return session.query(cls).offset(skip).limit(limit).all()
+
+    def update(self, session: Session, **kwargs):
+        for attr, value in kwargs.items():
+            setattr(self, attr, value)
+        session.commit()
+        session.refresh(self)
+        return self
+
+    def delete(self, session: Session):
+        session.delete(self)
+        session.commit() 
