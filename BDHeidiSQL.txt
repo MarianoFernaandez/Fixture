@@ -135,3 +135,73 @@ nombre: Nombre de la cancha.
 ubicacion: Ubicación de la cancha.
 tamaño: Tamaño de la cancha (puede ser: F5, F6, F7, F8).
 tipoSuperficie: Tipo de superficie de la cancha (puede ser: piso, pasto).
+
+--- CARGA DE DATOS ---
+
+-- Carga de datos en la tabla Torneos
+INSERT INTO Torneos (nombre, fechaInicio, fechaFin, cantidadEquipos)
+VALUES
+('Torneo Liga Argentina', '2024-01-15', '2024-06-15', 10);
+
+-- Carga de datos en la tabla Equipos (los 5 equipos más grandes de Argentina)
+INSERT INTO Equipos (nombre, escudo, ciudad, fechaFundacion)
+VALUES
+('Boca Juniors', 'https://escudo-boca.com', 'Buenos Aires', '1905-04-03'),
+('River Plate', 'https://escudo-river.com', 'Buenos Aires', '1901-05-25'),
+('Independiente', 'https://escudo-independiente.com', 'Avellaneda', '1904-08-04'),
+('Racing Club', 'https://escudo-racing.com', 'Avellaneda', '1903-03-25'),
+('San Lorenzo', 'https://escudo-sanlorenzo.com', 'Buenos Aires', '1908-04-01');
+
+-- Carga de datos en la tabla Jugadores
+INSERT INTO Jugadores (apellido, nombre, fechaNacimiento, posicion, numeroDeCamiseta, equipo_id)
+VALUES
+('Tevez', 'Carlos', '1984-02-05', 'delantero', 10, 1), -- Boca Juniors
+('Enzo', 'Francescoli', '1961-11-12', 'delantero', 9, 2), -- River Plate
+('Bochini', 'Ricardo', '1954-01-25', 'central', 10, 3), -- Independiente
+('Milito', 'Diego', '1979-06-12', 'delantero', 22, 4), -- Racing Club
+('Ortigoza', 'Nestor', '1984-10-07', 'central', 20, 5); -- San Lorenzo
+
+-- Carga de datos en la tabla Roles
+INSERT INTO Roles (rol)
+VALUES
+('titular/capitan'),
+('titular'),
+('suplente');
+
+-- Carga de datos en la tabla Fixture
+INSERT INTO Fixture (idTorneo)
+VALUES
+(1); -- Asocia con el Torneo 'Torneo Liga Argentina'
+
+-- Carga de datos en la tabla Fechas
+INSERT INTO Fechas (idFixture, fechaPartido)
+VALUES
+(1, '2024-02-01'),
+(1, '2024-02-08'),
+(1, '2024-02-15');
+
+-- Carga de datos en la tabla Partidos
+INSERT INTO Partidos (idEquipoLocal, idEquipoVisitante, golLocal, golVisitante)
+VALUES
+(1, 2, 2, 1), -- Boca Juniors vs River Plate
+(3, 4, 1, 1), -- Independiente vs Racing Club
+(5, 1, 0, 0); -- San Lorenzo vs Boca Juniors
+
+-- Carga de datos en la tabla Árbitros
+INSERT INTO Arbitros (apyn, idPartido)
+VALUES
+('Néstor Pitana', 1),
+('Patricio Loustau', 2),
+('Fernando Rapallini', 3);
+
+-- Carga de datos en la tabla Canchas
+INSERT INTO Canchas (nombre, ubicacion, tamaño, tipoSuperficie)
+VALUES
+('La Bombonera', 'Buenos Aires', 'F7', 'pasto'),
+('Monumental', 'Buenos Aires', 'F7', 'pasto'),
+('Libertadores de América', 'Avellaneda', 'F7', 'pasto'),
+('Cilindro', 'Avellaneda', 'F7', 'pasto'),
+('Nuevo Gasómetro', 'Buenos Aires', 'F7', 'pasto');
+
+
+
