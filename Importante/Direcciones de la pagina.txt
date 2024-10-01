@@ -4,4 +4,6 @@ http://127.0.0.1:8000/docs
 
 Ver todo los equipos:
 
-http://127.0.0.1:5500/static/fixture.html
+Se simplifico montanto los static y esto hace que no usemos mas liveserver. 
+
+http://127.0.0.1:8000/static/fixture.html
