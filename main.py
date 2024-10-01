@@ -3,11 +3,14 @@ from sqlalchemy.orm import declarative_base, sessionmaker, relationship, joinedl
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from database import Base, engine, SessionLocal
+from endpoints import router #Importante para poder llamar a los endpoints desde el main
 
 # Crear las tablas en la base de datos
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+
+app.include_router(router) #Registra los endpoints en la aplicacion
 
 # CORS (permite la interacción con los navegadores)
 origins = [

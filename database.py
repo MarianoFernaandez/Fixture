@@ -1,29 +1,36 @@
 from sqlalchemy import create_engine, Column, Integer, String, Date, ForeignKey
 from sqlalchemy.orm import declarative_base, sessionmaker, relationship, joinedload
 
+# Configuración de conexión a la base de datos
 username = 'root'
 password = '454848'
 host = '127.0.0.1'
-port = '3307' 
-# Importante poner el puerto para que SQLalchemy sepa escuchar el servidor (Heidi)
+port = '3307'  # Puerto de conexión
 database = 'fixture'
 
-connection_string = (
-    f'mysql+pymysql://{username}:{password}@{host}:{port}/{database}'
-)
+# String de conexión
+connection_string = f'mysql+pymysql://{username}:{password}@{host}:{port}/{database}'
 
-# Crear una instancia de motor para la base de datos
+# Crear el motor para conectarse a la base de datos
 engine = create_engine(connection_string)
-# Crear una clase de sesión para interactuar con la base de datos
-SessionLocal = sessionmaker(autocomit=False, autoflush=False, bind=engine)
-# Base para la creación de modelos de datos
-Base = declarative_base()
-# Base para la creación de modelos de datos
-Base.metadata.create_all(bind=engine)
 
+# Crear una fábrica de sesiones para manejar conexiones de base de datos
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+# Declarativa base para la creación de los modelos
+Base = declarative_base()
+
+# Dependency para obtener la sesión de la base de datos
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+# Probar la conexión
 try:
     with engine.connect() as connection:
-        print("Conexión exitosa!")
-        # Realiza tus operaciones de base de datos aquí
+        print("¡Conexión exitosa!")
 except Exception as e:
     print(f"Error al conectar: {e}")

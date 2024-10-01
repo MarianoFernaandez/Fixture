@@ -1,0 +1,7 @@
+Ver los endpoints 
+
+http://127.0.0.1:8000/docs
+
+Ver todo los equipos:
+
+http://127.0.0.1:5500/static/fixture.html

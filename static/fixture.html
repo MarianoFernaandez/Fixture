@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Equipos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Lista de Equipos</h1>
+    <table id="equiposTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre del Equipo</th>
+                <th>Ciudad</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Aquí se llenarán los datos de los equipos -->
+        </tbody>
+    </table>
+
+    <script>
+        async function cargarEquipos() {
+            const response = await fetch('http://localhost:8000/equipos/');
+            const equipos = await response.json();
+
+            const tabla = document.getElementById('equiposTable').getElementsByTagName('tbody')[0];
+            equipos.forEach(equipo => {
+                const fila = tabla.insertRow();
+                const celdaId = fila.insertCell(0);
+                const celdaNombre = fila.insertCell(1);
+                const celdaCiudad = fila.insertCell(2);
+
+                celdaId.textContent = equipo.id;
+                celdaNombre.textContent = equipo.nombre;
+                celdaCiudad.textContent = equipo.ciudad;
+            });
+        }
+
+        window.onload = cargarEquipos;
+    </script>
+
+</body>
+</html>
