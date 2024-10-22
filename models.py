@@ -2,6 +2,21 @@ from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Enum, Chec
 from sqlalchemy.orm import relationship, declarative_base, Session
 from database import Base
 
+#---Vista---
+
+class VistaEquiposEstadisticas(Base):
+    __tablename__ = "Vista_Equipos_Estadisticas"  # Nombre de la vista
+
+    NombreEquipo = Column(String, primary_key=True)
+    Puntos = Column(Integer)
+    PartidosJugados = Column(Integer)
+    PartidosGanados = Column(Integer)
+    PartidosEmpatados = Column(Integer)
+    PartidosPerdidos = Column(Integer)
+    GolesAFavor = Column(Integer)
+    GolesEnContra = Column(Integer)
+    DiferenciaDeGoles = Column(Integer)
+
 #---Torneos---
 
 class Torneo(Base):

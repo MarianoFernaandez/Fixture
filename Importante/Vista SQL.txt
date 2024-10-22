@@ -1,0 +1,63 @@
+CREATE OR REPLACE VIEW Vista_Equipos_Estadisticas AS
+SELECT 
+    equipos.nombre AS NombreEquipo,
+    (COUNT(CASE 
+        WHEN partidos.idEquipoLocal = equipos.id AND partidos.golLocal > partidos.golVisitante 
+        THEN 1
+        WHEN partidos.idEquipoVisitante = equipos.id AND partidos.golVisitante > partidos.golLocal 
+        THEN 1
+    END) * 3 + COUNT(CASE 
+        WHEN (partidos.idEquipoLocal = equipos.id OR partidos.idEquipoVisitante = equipos.id) 
+             AND partidos.golLocal = partidos.golVisitante 
+        THEN 1 
+    END)) AS Puntos,
+    COUNT(CASE 
+        WHEN partidos.idEquipoLocal = equipos.id OR partidos.idEquipoVisitante = equipos.id 
+        THEN 1 
+    END) AS PartidosJugados,
+    COUNT(CASE 
+        WHEN partidos.idEquipoLocal = equipos.id AND partidos.golLocal > partidos.golVisitante 
+        THEN 1
+        WHEN partidos.idEquipoVisitante = equipos.id AND partidos.golVisitante > partidos.golLocal 
+        THEN 1
+    END) AS PartidosGanados,
+    COUNT(CASE 
+        WHEN (partidos.idEquipoLocal = equipos.id OR partidos.idEquipoVisitante = equipos.id) 
+             AND partidos.golLocal = partidos.golVisitante 
+        THEN 1 
+    END) AS PartidosEmpatados,
+    COUNT(CASE 
+        WHEN partidos.idEquipoLocal = equipos.id AND partidos.golLocal < partidos.golVisitante 
+        THEN 1
+        WHEN partidos.idEquipoVisitante = equipos.id AND partidos.golVisitante < partidos.golLocal 
+        THEN 1
+    END) AS PartidosPerdidos,
+    SUM(CASE 
+        WHEN partidos.idEquipoLocal = equipos.id 
+        THEN partidos.golLocal
+        WHEN partidos.idEquipoVisitante = equipos.id 
+        THEN partidos.golVisitante
+    END) AS GolesAFavor,
+    SUM(CASE 
+        WHEN partidos.idEquipoLocal = equipos.id 
+        THEN partidos.golVisitante
+        WHEN partidos.idEquipoVisitante = equipos.id 
+        THEN partidos.golLocal
+    END) AS GolesEnContra,
+    SUM(CASE 
+        WHEN partidos.idEquipoLocal = equipos.id 
+        THEN partidos.golLocal - partidos.golVisitante
+        WHEN partidos.idEquipoVisitante = equipos.id 
+        THEN partidos.golVisitante - partidos.golLocal
+    END) AS DiferenciaDeGoles
+FROM 
+    equipos
+LEFT JOIN 
+    partidos ON equipos.id = partidos.idEquipoLocal OR equipos.id = partidos.idEquipoVisitante
+GROUP BY 
+    equipos.id, equipos.nombre
+ORDER BY 
+    Puntos DESC, 
+    PartidosGanados DESC, 
+    DiferenciaDeGoles DESC, 
+    GolesAFavor DESC;
