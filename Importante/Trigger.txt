@@ -1,0 +1,22 @@
+DELIMITER //
+
+create TRIGGER asignar_puntos
+BEFORE INSERT ON partidos
+FOR EACH ROW
+BEGIN
+    IF NEW.golLocal > NEW.golVisitante THEN
+        SET NEW.puntosLocal = 3;
+        SET NEW.puntosVisitante = 0;
+    END IF;
+	 IF NEW.golLocal < NEW.golVisitante THEN
+        SET NEW.puntosLocal = 0;
+        SET NEW.puntosVisitante = 3;
+   END if;
+    IF NEW.golLocal = NEW.golVisitante THEN
+        SET NEW.puntosLocal = 1;
+        SET NEW.puntosVisitante = 1;
+    END IF;
+END;
+//
+
+DELIMITER ;

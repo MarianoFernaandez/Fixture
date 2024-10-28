@@ -272,11 +272,13 @@ class Partido(Base):
     idEquipoVisitante = Column(Integer, ForeignKey('equipos.id'))
     golLocal = Column(Integer)
     golVisitante = Column(Integer)
-    
+    puntosLocal = Column(Integer, default=0)  # Nuevo campo
+    puntosVisitante = Column(Integer, default=0)  # Nuevo campo
+
     # Relación con Fechas
     fecha_id = Column(Integer, ForeignKey('fechas.id'))
     fecha = relationship("Fecha", back_populates="partidos")
-    
+
     # Relación con Equipos
     equipoLocal = relationship("Equipo", foreign_keys=[idEquipoLocal])
     equipoVisitante = relationship("Equipo", foreign_keys=[idEquipoVisitante])
@@ -284,7 +286,7 @@ class Partido(Base):
     # Relación con Árbitro
     arbitro = relationship("Arbitro", back_populates="partido", uselist=False)
 
-# Métodos CRUD
+    # Métodos CRUD
     @classmethod
     def create(cls, session: Session, **kwargs):
         new_partidos = cls(**kwargs)
@@ -310,7 +312,7 @@ class Partido(Base):
 
     def delete(self, session: Session):
         session.delete(self)
-        session.commit() 
+        session.commit()
 
 #---Arbitros---
 

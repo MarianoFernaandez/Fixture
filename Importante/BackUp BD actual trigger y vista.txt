@@ -1,0 +1,282 @@
+-- --------------------------------------------------------
+-- Host:                         127.0.0.1
+-- Versión del servidor:         11.3.2-MariaDB - mariadb.org binary distribution
+-- SO del servidor:              Win64
+-- HeidiSQL Versión:             12.6.0.6765
+-- --------------------------------------------------------
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+
+-- Volcando estructura de base de datos para fixture
+CREATE DATABASE IF NOT EXISTS `fixture` /*!40100 DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci */;
+USE `fixture`;
+
+-- Volcando estructura para tabla fixture.arbitros
+CREATE TABLE IF NOT EXISTS `arbitros` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `apyn` varchar(200) DEFAULT NULL,
+  `idPartido` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idPartido` (`idPartido`),
+  CONSTRAINT `arbitros_ibfk_1` FOREIGN KEY (`idPartido`) REFERENCES `partidos` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+-- Volcando datos para la tabla fixture.arbitros: ~3 rows (aproximadamente)
+INSERT INTO `arbitros` (`id`, `apyn`, `idPartido`) VALUES
+	(1, 'Néstor Pitana', 1),
+	(2, 'Patricio Loustau', 2),
+	(3, 'Fernando Rapallini', 3);
+
+-- Volcando estructura para tabla fixture.canchas
+CREATE TABLE IF NOT EXISTS `canchas` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(100) NOT NULL,
+  `ubicacion` varchar(255) DEFAULT NULL,
+  `tamaño` enum('F5','F6','F7','F8') DEFAULT NULL,
+  `tipoSuperficie` enum('piso','pasto') DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+-- Volcando datos para la tabla fixture.canchas: ~5 rows (aproximadamente)
+INSERT INTO `canchas` (`id`, `nombre`, `ubicacion`, `tamaño`, `tipoSuperficie`) VALUES
+	(1, 'La Bombonera', 'Buenos Aires', 'F7', 'pasto'),
+	(2, 'Monumental', 'Buenos Aires', 'F7', 'pasto'),
+	(3, 'Libertadores de América', 'Avellaneda', 'F7', 'pasto'),
+	(4, 'Cilindro', 'Avellaneda', 'F7', 'pasto'),
+	(5, 'Nuevo Gasómetro', 'Buenos Aires', 'F7', 'pasto');
+
+-- Volcando estructura para tabla fixture.equipos
+CREATE TABLE IF NOT EXISTS `equipos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(100) NOT NULL,
+  `escudo` varchar(255) DEFAULT NULL,
+  `ciudad` varchar(100) DEFAULT NULL,
+  `fechaFundacion` date DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `nombre` (`nombre`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+-- Volcando datos para la tabla fixture.equipos: ~6 rows (aproximadamente)
+INSERT INTO `equipos` (`id`, `nombre`, `escudo`, `ciudad`, `fechaFundacion`) VALUES
+	(1, 'Boca Juniors', 'https://escudo-boca.com', 'Buenos Aires', '1905-04-03'),
+	(2, 'River Plate', 'https://escudo-river.com', 'Buenos Aires', '1901-05-25'),
+	(3, 'Independiente', 'https://escudo-independiente.com', 'Avellaneda', '1904-08-04'),
+	(4, 'Racing Club', 'https://escudo-racing.com', 'Avellaneda', '1903-03-25'),
+	(5, 'San Lorenzo', 'https://escudo-sanlorenzo.com', 'Buenos Aires', '1908-04-01'),
+	(12, 'Newell\'s Old Boys', 'https://escudos.newells.com', 'Rosario', '1903-11-03');
+
+-- Volcando estructura para tabla fixture.fechas
+CREATE TABLE IF NOT EXISTS `fechas` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `idFixture` int(11) DEFAULT NULL,
+  `fechaPartido` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idFixture` (`idFixture`),
+  CONSTRAINT `fechas_ibfk_1` FOREIGN KEY (`idFixture`) REFERENCES `fixture` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+-- Volcando datos para la tabla fixture.fechas: ~3 rows (aproximadamente)
+INSERT INTO `fechas` (`id`, `idFixture`, `fechaPartido`) VALUES
+	(1, 1, '2024-02-01 00:00:00'),
+	(2, 1, '2024-02-08 00:00:00'),
+	(3, 1, '2024-02-15 00:00:00');
+
+-- Volcando estructura para tabla fixture.fixture
+CREATE TABLE IF NOT EXISTS `fixture` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `idTorneo` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idTorneo` (`idTorneo`),
+  CONSTRAINT `fixture_ibfk_1` FOREIGN KEY (`idTorneo`) REFERENCES `torneos` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+-- Volcando datos para la tabla fixture.fixture: ~0 rows (aproximadamente)
+INSERT INTO `fixture` (`id`, `idTorneo`) VALUES
+	(1, 1);
+
+-- Volcando estructura para tabla fixture.jugadores
+CREATE TABLE IF NOT EXISTS `jugadores` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `apellido` varchar(100) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `fechaNacimiento` date DEFAULT NULL,
+  `posicion` enum('arquero','defensor','central','delantero') DEFAULT NULL,
+  `numeroDeCamiseta` int(11) DEFAULT NULL,
+  `equipo_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_numero_de_camiseta_per_equipo` (`numeroDeCamiseta`,`equipo_id`),
+  KEY `equipo_id` (`equipo_id`),
+  CONSTRAINT `jugadores_ibfk_1` FOREIGN KEY (`equipo_id`) REFERENCES `equipos` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+-- Volcando datos para la tabla fixture.jugadores: ~5 rows (aproximadamente)
+INSERT INTO `jugadores` (`id`, `apellido`, `nombre`, `fechaNacimiento`, `posicion`, `numeroDeCamiseta`, `equipo_id`) VALUES
+	(1, 'Tevez', 'Carlos', '1984-02-05', 'delantero', 10, 1),
+	(2, 'Enzo', 'Francescoli', '1961-11-12', 'delantero', 9, 2),
+	(3, 'Bochini', 'Ricardo', '1954-01-25', 'central', 10, 3),
+	(4, 'Milito', 'Diego', '1979-06-12', 'delantero', 22, 4),
+	(5, 'Ortigoza', 'Nestor', '1984-10-07', 'central', 20, 5);
+
+-- Volcando estructura para tabla fixture.partidos
+CREATE TABLE IF NOT EXISTS `partidos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `idEquipoLocal` int(11) DEFAULT NULL,
+  `idEquipoVisitante` int(11) DEFAULT NULL,
+  `golLocal` int(11) DEFAULT NULL,
+  `golVisitante` int(11) DEFAULT NULL,
+  `puntosLocal` int(11) DEFAULT 0,
+  `puntosVisitante` int(11) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  KEY `idEquipoLocal` (`idEquipoLocal`),
+  KEY `idEquipoVisitante` (`idEquipoVisitante`),
+  CONSTRAINT `partidos_ibfk_1` FOREIGN KEY (`idEquipoLocal`) REFERENCES `equipos` (`id`),
+  CONSTRAINT `partidos_ibfk_2` FOREIGN KEY (`idEquipoVisitante`) REFERENCES `equipos` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+-- Volcando datos para la tabla fixture.partidos: ~3 rows (aproximadamente)
+INSERT INTO `partidos` (`id`, `idEquipoLocal`, `idEquipoVisitante`, `golLocal`, `golVisitante`, `puntosLocal`, `puntosVisitante`) VALUES
+	(1, 1, 2, 2, 1, 0, 0),
+	(2, 3, 4, 1, 1, 0, 0),
+	(3, 5, 1, 0, 0, 0, 0),
+	(7, 1, 2, 3, 1, 3, 0),
+	(8, 1, 2, 1, 2, 0, 3),
+	(9, 1, 2, 2, 2, 1, 1);
+
+-- Volcando estructura para tabla fixture.roles
+CREATE TABLE IF NOT EXISTS `roles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `rol` enum('titular/capitan','titular','suplente') DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+-- Volcando datos para la tabla fixture.roles: ~3 rows (aproximadamente)
+INSERT INTO `roles` (`id`, `rol`) VALUES
+	(1, 'titular/capitan'),
+	(2, 'titular'),
+	(3, 'suplente');
+
+-- Volcando estructura para tabla fixture.torneos
+CREATE TABLE IF NOT EXISTS `torneos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(100) NOT NULL,
+  `fechaInicio` date DEFAULT NULL,
+  `fechaFin` date DEFAULT NULL,
+  `cantidadEquipos` int(11) DEFAULT NULL CHECK (`cantidadEquipos` in (8,10,12,14,16)),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+-- Volcando datos para la tabla fixture.torneos: ~2 rows (aproximadamente)
+INSERT INTO `torneos` (`id`, `nombre`, `fechaInicio`, `fechaFin`, `cantidadEquipos`) VALUES
+	(1, 'Torneo Liga Argentina', '2024-01-15', '2024-06-15', 10),
+	(2, 'Torneo Liga Argentina', '2024-01-15', '2024-06-15', 10);
+
+-- Volcando estructura para vista fixture.vista_equipos_estadisticas
+-- Creando tabla temporal para superar errores de dependencia de VIEW
+CREATE TABLE `vista_equipos_estadisticas` (
+	`NombreEquipo` VARCHAR(100) NOT NULL COLLATE 'latin1_swedish_ci',
+	`Puntos` BIGINT(23) NOT NULL,
+	`PartidosJugados` BIGINT(21) NOT NULL,
+	`PartidosGanados` BIGINT(21) NOT NULL,
+	`PartidosEmpatados` BIGINT(21) NOT NULL,
+	`PartidosPerdidos` BIGINT(21) NOT NULL,
+	`GolesAFavor` DECIMAL(32,0) NULL,
+	`GolesEnContra` DECIMAL(32,0) NULL,
+	`DiferenciaDeGoles` DECIMAL(33,0) NULL
+) ENGINE=MyISAM;
+
+-- Volcando estructura para disparador fixture.asignar_puntos
+SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
+DELIMITER //
+CREATE TRIGGER asignar_puntos
+BEFORE INSERT ON partidos
+FOR EACH ROW
+BEGIN
+    IF NEW.golLocal > NEW.golVisitante THEN
+        SET NEW.puntosLocal = 3;
+        SET NEW.puntosVisitante = 0;
+    END IF;
+	 IF NEW.golLocal < NEW.golVisitante THEN
+        SET NEW.puntosLocal = 0;
+        SET NEW.puntosVisitante = 3;
+   END if;
+    IF NEW.golLocal = NEW.golVisitante THEN
+        SET NEW.puntosLocal = 1;
+        SET NEW.puntosVisitante = 1;
+    END IF;
+END//
+DELIMITER ;
+SET SQL_MODE=@OLDTMP_SQL_MODE;
+
+-- Eliminando tabla temporal y crear estructura final de VIEW
+DROP TABLE IF EXISTS `vista_equipos_estadisticas`;
+CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `vista_equipos_estadisticas` AS SELECT 
+    equipos.nombre AS NombreEquipo,
+    (COUNT(CASE 
+        WHEN partidos.idEquipoLocal = equipos.id AND partidos.golLocal > partidos.golVisitante 
+        THEN 1
+        WHEN partidos.idEquipoVisitante = equipos.id AND partidos.golVisitante > partidos.golLocal 
+        THEN 1
+    END) * 3 + COUNT(CASE 
+        WHEN (partidos.idEquipoLocal = equipos.id OR partidos.idEquipoVisitante = equipos.id) 
+             AND partidos.golLocal = partidos.golVisitante 
+        THEN 1 
+    END)) AS Puntos,
+    COUNT(CASE 
+        WHEN partidos.idEquipoLocal = equipos.id OR partidos.idEquipoVisitante = equipos.id 
+        THEN 1 
+    END) AS PartidosJugados,
+    COUNT(CASE 
+        WHEN partidos.idEquipoLocal = equipos.id AND partidos.golLocal > partidos.golVisitante 
+        THEN 1
+        WHEN partidos.idEquipoVisitante = equipos.id AND partidos.golVisitante > partidos.golLocal 
+        THEN 1
+    END) AS PartidosGanados,
+    COUNT(CASE 
+        WHEN (partidos.idEquipoLocal = equipos.id OR partidos.idEquipoVisitante = equipos.id) 
+             AND partidos.golLocal = partidos.golVisitante 
+        THEN 1 
+    END) AS PartidosEmpatados,
+    COUNT(CASE 
+        WHEN partidos.idEquipoLocal = equipos.id AND partidos.golLocal < partidos.golVisitante 
+        THEN 1
+        WHEN partidos.idEquipoVisitante = equipos.id AND partidos.golVisitante < partidos.golLocal 
+        THEN 1
+    END) AS PartidosPerdidos,
+    SUM(CASE 
+        WHEN partidos.idEquipoLocal = equipos.id 
+        THEN partidos.golLocal
+        WHEN partidos.idEquipoVisitante = equipos.id 
+        THEN partidos.golVisitante
+    END) AS GolesAFavor,
+    SUM(CASE 
+        WHEN partidos.idEquipoLocal = equipos.id 
+        THEN partidos.golVisitante
+        WHEN partidos.idEquipoVisitante = equipos.id 
+        THEN partidos.golLocal
+    END) AS GolesEnContra,
+    SUM(CASE 
+        WHEN partidos.idEquipoLocal = equipos.id 
+        THEN partidos.golLocal - partidos.golVisitante
+        WHEN partidos.idEquipoVisitante = equipos.id 
+        THEN partidos.golVisitante - partidos.golLocal
+    END) AS DiferenciaDeGoles
+FROM 
+    equipos
+LEFT JOIN 
+    partidos ON equipos.id = partidos.idEquipoLocal OR equipos.id = partidos.idEquipoVisitante
+GROUP BY 
+    equipos.id, equipos.nombre ;
+
+/*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;

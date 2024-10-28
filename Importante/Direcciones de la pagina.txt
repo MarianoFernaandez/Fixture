@@ -7,3 +7,14 @@ Ver todo los equipos:
 Se simplifico montanto los static y esto hace que no usemos mas liveserver. 
 
 http://127.0.0.1:8000/static/fixture.html
+
+
+Probar con datos 
+
+-- Insertar datos en la tabla partidos
+INSERT INTO partidos (idEquipoLocal, idEquipoVisitante, golLocal, golVisitante) VALUES (1, 2, 3, 1);
+INSERT INTO partidos (idEquipoLocal, idEquipoVisitante, golLocal, golVisitante) VALUES (1, 2, 1, 2);
+INSERT INTO partidos (idEquipoLocal, idEquipoVisitante, golLocal, golVisitante) VALUES (1, 2, 2, 2);
+
+-- Consultar los resultados
+SELECT * FROM partidos;
