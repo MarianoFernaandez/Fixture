@@ -3,29 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/styles.css"> <!-- Cambiado a la ruta correcta -->
-    <title>Torneo</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <title>Torneo Amateur</title>
 </head>
 <body>
-    <h1>Torneo de Equipos</h1>
-    <table id="tabla-equipos">
-        <thead>
-            <tr>
-                <th>Nombre del Equipo</th>
-                <th>Puntos</th>
-                <th>Partidos Jugados</th>
-                <th>Partidos Ganados</th>
-                <th>Partidos Empatados</th>
-                <th>Partidos Perdidos</th>
-                <th>Goles a Favor</th>
-                <th>Goles en Contra</th>
-                <th>Diferencia de Goles</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Los datos se insertarán aquí mediante JavaScript -->
-        </tbody>
-    </table>
-    <script src="/static/script.js"></script> <!-- Cambiado a la ruta correcta -->
+    <!-- Navbar -->
+    <nav>
+        <a href="#home">Inicio</a>
+        <a href="#tabla-equipos">Tabla de Posiciones</a>
+        <a href="#stats">Estadísticas</a>
+        <a href="#contact">Contacto</a>
+    </nav>
+
+    <h1>Torneo de Equipos Amateur</h1>
+
+    <!-- Bloques informativos -->
+    <section id="stats">
+        <div class="stat-box">
+            <h2>Equipos Registrados</h2>
+            <p id="equipos-registrados">12</p>
+        </div>
+        <div class="stat-box">
+            <h2>Partidos Jugados</h2>
+            <p id="partidos-jugados">24</p>
+        </div>
+        <div class="stat-box">
+            <h2>Goles Totales</h2>
+            <p id="goles-totales">52</p>
+        </div>
+        <div class="stat-box">
+            <h2>Promedio de Goles</h2>
+            <p id="promedio-goles">2.2</p>
+        </div>
+    </section>
+
+    <!-- Tabla de posiciones -->
+    <div class="container">
+        <table id="tabla-equipos">
+            <thead>
+                <tr>
+                    <th>Nombre del Equipo</th>
+                    <th>Puntos</th>
+                    <th>Partidos Jugados</th>
+                    <th>Partidos Ganados</th>
+                    <th>Partidos Empatados</th>
+                    <th>Partidos Perdidos</th>
+                    <th>Goles a Favor</th>
+                    <th>Goles en Contra</th>
+                    <th>Diferencia de Goles</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Los datos se insertarán aquí mediante JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <script src="/static/script.js"></script>
 </body>
 </html>

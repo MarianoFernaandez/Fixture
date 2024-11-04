@@ -5,8 +5,8 @@ from sqlalchemy.orm import declarative_base, sessionmaker, relationship, joinedl
 username = 'root'
 password = '454848'
 host = '127.0.0.1'
-port = '3307'  # Puerto de conexión
-database = 'fixture'
+port = '3306'  # Puerto de conexión / compu de Colegio: 3307 / Compu Casa: 3306
+database = 'Fixture' # En Colegio fixture / En casa Fixture
 
 # String de conexión
 connection_string = f'mysql+pymysql://{username}:{password}@{host}:{port}/{database}'

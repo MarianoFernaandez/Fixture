@@ -30,7 +30,7 @@ class Torneo(Base):
     # Relación 1 a 1 con Fixture
     fixture = relationship("Fixture", back_populates="torneo", uselist=False)
 
-     # Métodos CRUD
+    # Métodos CRUD
     @classmethod
     def create(cls, session: Session, **kwargs):
         new_torneo = cls(**kwargs)
